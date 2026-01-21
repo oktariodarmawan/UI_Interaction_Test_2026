@@ -1,0 +1,1 @@
+export const BASE_URL = 'https://ui-interaction-test-gg7k.bolt.host'

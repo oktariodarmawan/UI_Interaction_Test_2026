@@ -1,0 +1,50 @@
+
+  test('TC-005 - Upload CSV in CRUD Page', async ({ page }) => {
+    // INIT PAGE OBJECT
+    const homePage = new HomePage(page);
+    const crudPage = new CrudPage(page);
+    // STEP 1: Open Home
+    await homePage.navigate(BASE_URL);
+    await homePage.goToCrud();
+    // ASSERT: ensure already in CRUD page
+    await expect(page).toHaveURL(/\/crud/);
+    // Step 2: Upload CSV
+    // Assuming a sample CSV file exists, e.g., test-data.csv
+    await crudPage.uploadFile('./test-data.csv');
+    // Wait for upload to process
+    await page.waitForTimeout(5000);
+    // Assert that some records were added, e.g., check for a specific title
+    await expect(page.locator('h4').filter({ hasText: 'CSV Import' }).first()).toBeVisible();
+  });
+
+  test('TC-006 - Download JSON in CRUD Page', async ({ page }) => {
+    // INIT PAGE OBJECT
+    const homePage = new HomePage(page);
+    const crudPage = new CrudPage(page);
+    // STEP 1: Open Home
+    await homePage.navigate(BASE_URL);
+    await homePage.goToCrud();
+    // ASSERT: ensure already in CRUD page
+    await expect(page).toHaveURL(/\/crud/);
+    // Step 2: Download JSON
+    const download = await crudPage.downloadJSON();
+    // Assert download was triggered
+    expect(download.suggestedFilename()).toContain('.json');
+  });
+
+  test('TC-007 - Download CSV in CRUD Page', async ({ page }) => {
+    // INIT PAGE OBJECT
+    const homePage = new HomePage(page);
+    const crudPage = new CrudPage(page);
+    // STEP 1: Open Home
+    await homePage.navigate(BASE_URL);
+    await homePage.goToCrud();
+    // ASSERT: ensure already in CRUD page
+    await expect(page).toHaveURL(/\/crud/);
+    // Step 2: Download CSV
+    const download = await crudPage.downloadCSV();
+    // Assert download was triggered
+    expect(download.suggestedFilename()).toContain('.csv');
+  });
+
+});
